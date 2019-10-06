@@ -1,0 +1,9 @@
+
+Subsystem sftp internal-sftp
+        Match Group minecraft
+        ChrootDirectory /var/www/html/server
+        ForceCommand internal-sftp
+        X11Forwarding no
+        AllowTcpForwarding no
+
+
