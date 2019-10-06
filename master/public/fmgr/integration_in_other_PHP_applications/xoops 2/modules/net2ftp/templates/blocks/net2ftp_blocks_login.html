@@ -1,0 +1,129 @@
+<!-- Template /xoops/html/modules/net2ftp/templates/blocks/login.html begin -->
+<script type="text/javascript"><!--
+function CheckInput(form) {
+	var u,p1,p2,e;
+	s=form.ftpserver.value;
+	u=form.username.value;
+	p=form.password.value;
+	if (s.length==0) {
+		form.ftpserver.focus();
+		alert("Please enter an FTP server.");
+		return false;
+	}
+	if (u.length==0) {
+		form.username.focus();
+		alert("Please enter a username.");
+		return false;
+	}
+	return true;
+}
+function do_anonymous(form) {
+	var checked = form.anonymous.checked;
+	if (checked == true) {
+		vars_defined = 'true';
+		last_username = form.username.value;
+		last_password = form.password.value;
+		form.username.value = "anonymous";
+		form.password.value = "user@net2ftp.com";
+	} else {
+		form.username.value = last_username;
+		form.password.value = last_password;
+	}
+	return true;
+}
+function ClearCookies() {
+	document.LoginForm.state.value='clearcookies';
+	document.LoginForm.state2.value='';
+	document.LoginForm.submit();
+}
+//--></script>
+<script type="text/javascript" src="plugins/html_progress/html_progress.js"></script>
+<link rel="stylesheet" type="text/css" href="http://localhost/01--net2ftp/build0037/skins/blue/css/main.css">
+
+			<div class="header21">Login!</div>
+			<form name="LoginForm" id="LoginForm" action="index.php" method="post" onSubmit="return CheckInput(this);">
+			<div style="border: 1px solid black; background-color: #DDDDDD; margin-top: 10px; padding: 10px;">
+
+			<table border="0" cellspacing="0" cellpadding="2">
+
+				<tr>
+					<td valign="top">FTP server</td>
+					<td valign="top" colspan="2">
+							<input type="text" class="input" name="ftpserver" value="localhost" />
+	 						port <input type="text" class="input" size="3" maxlength="5" name="ftpserverport" value="21" />
+						<div style="font-size: 80%;">Example: ftp.server.com, 192.123.45.67</div>
+					</td>
+				</tr>
+				<tr valign="middle">
+					<td>Username</td>
+					<td><input type="text" class="input" name="username" value="david" /></td>
+					<td><span style="font-size: 80%;"><input type="checkbox" name="anonymous" value="1" onclick="do_anonymous(form);" /> Anonymous</span></td>
+				</tr>
+				<tr valign="middle">
+					<td>Password</td>
+					<td><input type="password" class="input" name="password" value="" /></td>
+					<td><span style="font-size: 80%;"><input type="checkbox" name="passivemode" value="yes" /> Passive mode</span></td>
+				</tr>
+				<tr valign="middle">
+					<td>Initial directory</td>
+					<td><input type="text" class="input" name="directory" value="" /></td>
+
+						<td></td>
+				</tr>
+				<tr valign="middle">
+					<td>Language</td>
+					<td>
+<select name="language" id="language" onChange="document.LoginForm.state.value='login'; document.LoginForm.submit();" >
+<option value="zh" >Simplified Chinese</option>
+<option value="tc" >Traditional Chinese</option>
+<option value="cs" >Czech</option>
+<option value="nl" >Dutch</option>
+<option value="en" selected>English</option>
+<option value="fr" >French</option>
+<option value="de" >German</option>
+<option value="it" >Italian</option>
+<option value="pl" >Polish</option>
+<option value="pt" >Portugese</option>
+<option value="ru" >Russian</option>
+<option value="es" >Spanish</option>
+</select>
+					</td>
+					<td></td>
+				</tr>
+				<tr valign="middle">
+					<td>Skin</td>
+					<td>
+<select name="skin" id="skin"   >
+<option value="blue" selected>Blue</option>
+<option value="pastel" >Pastel</option>
+<option value="black" >Black</option>
+<option value="grey" >Grey</option>
+<option value="yellow" >Yellow</option>
+</select>
+					</td>
+					<td></td>
+				</tr>
+					<tr valign="middle">
+						<td>FTP mode</td>
+						<td colspan="2"><input type="radio" name="ftpmode" value="automatic" /> Automatic &nbsp; <input type="radio" name="ftpmode" value="binary" checked/> Binary</td>
+					</tr>
+				<tr valign="middle">
+					<td colspan="2" style="text-align: center;">
+						<input type="hidden" name="state"     value="browse" />
+						<input type="hidden" name="state2"    value="main" />
+						<input type="submit" class="button"   value="Login" title="Login (accesskey l)" accesskey="l"/>
+					</td>
+					<td></td>
+				</tr>
+				<tr valign="middle">
+					<td colspan="2" style="text-align: center;"><span style="font-size: 80%;"><a href="javascript:ClearCookies();">Clear cookies</a></span></td>
+					<td style="text-align: right; font-size: 80%;"><a href="javascript: createLoginWindow();">Admin</a></td>
+				</tr>
+			</table>
+			
+			</div>
+			</form>
+			<script type="text/javascript"><!--
+			document.LoginForm.ftpserver.focus();
+			//--></script>
+<!-- Template /xoops/html/modules/net2ftp/templates/blocks/login.html end -->

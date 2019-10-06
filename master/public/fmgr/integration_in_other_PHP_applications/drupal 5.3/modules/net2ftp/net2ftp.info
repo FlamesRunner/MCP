@@ -1,0 +1,11 @@
+; $Id: net2ftp.info,v 0.97 2007/10/10 18:00:00 david Exp $
+name = net2ftp
+description = A web based FTP client.
+package = Core - optional
+version = VERSION
+
+; Information added by drupal.org packaging script on 2007-07-26
+version = "5.2"
+project = "drupal"
+datestamp = "1185477907"
+

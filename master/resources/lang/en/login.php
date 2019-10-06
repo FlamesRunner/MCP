@@ -1,0 +1,8 @@
+<?php
+
+	return [
+		'Login' => 'Login',
+		'E-Mail Address' => 'Email address',
+		'Name' => 'Full name'
+	];
+?>

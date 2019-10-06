@@ -1,0 +1,29 @@
+
+This small document gives some hints on how to integrate net2ftp in another
+PHP application.
+
+For integration in Drupal, Mambo or Xoops, please refer to readme.txt document 
+in the respective subdirectories - there is no need to read the hints below.
+
+-----
+
+First of all, look at the source code of /net2ftp/index.php, this should give 
+you an idea on which are the integration hooks. 
+
+Basically:
+- call net2ftp("sendHttpHeaders") where the headers are sent in the other application
+- call net2ftp("printJavascript") and net2ftp("printCSS") in the HTML head 
+  section, to include Javascript code files and CSS style sheets
+- call net2ftp("printBodyOnload") in the HTML body tag
+- call net2ftp("printBody") to print the HTML body
+
+Note that net2ftp("sendHttpHeaders") MUST be called first, as the 
+initialization is done at this stage.
+
+Some specific changes to the net2ftp code may have to be made.
+For Mambo, Xoops and Drupal, these are located in the following files:
+- /net2ftp/includes/registerglobals.inc.php: to register specific variables
+- /skins/skins.inc.php: to add a specific skin to the list of skins
+
+If you have any question, post a message on the forum at 
+http://www.net2ftp.org/forums.

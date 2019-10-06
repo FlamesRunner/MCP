@@ -1,0 +1,314 @@
+<?php
+
+// ------------------------------------------------------------------------
+// Set your parameters here
+// ------------------------------------------------------------------------
+
+// Enter the directory where net2ftp is located on the webserver's filesystem (without ending /)
+// On Windows, use double backslashes like for example "C:\\path\\to\\net2ftp"
+	define("NET2FTP_APPLICATION_ROOTDIR", "/path/to/net2ftp");
+
+// Enter the URL where net2ftp can be accessed (without ending /)
+	define("NET2FTP_APPLICATION_ROOTDIR_URL", "http://www.mywebsite.com/net2ftp");
+
+// ------------------------------------------------------------------------
+// Nothing has to be changed below (unless you know what you're doing!)
+// ------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * @file
+ * net2ftp is a web-based FTP client written in PHP.
+ */
+
+/**
+ * Implementation of hook_help().
+ */
+function net2ftp_help($section) {
+	switch ($section) {
+		case "admin/help#net2ftp":
+			return t("
+      <p>When enabled, the Drupal net2ftp module allows users to connect to FTP servers and manage their websites.</p>
+
+      <h3>User features</h3>
+	<ul>
+	<li> <strong>Navigate the FTP server:</strong><br />
+	Once you have logged in, you can browse from directory to directory and see all the subdirectories and files.</li>
+
+	<li> <strong>Upload files</strong><br />
+	There are 3 different ways to upload files: the standard upload form, the upload-and-unzip functionality, and the Java Applet.</li>
+
+	<li> <strong>Download files</strong><br />
+	Click on a filename to quickly download one file.<br />Select multiple files and click on Download; the selected files will be downloaded in a zip archive.</li>
+
+	<li> <strong>Zip files</strong><br />
+	... and save the zip archive on the FTP server, or email it to someone.</li>
+
+	<li> <strong>Copy, move and delete</strong><br />
+	Directories are handled recursively, meaning that their content (subdirectories and files) will also be copied, moved or deleted.</li>
+
+	<li> <strong>Copy or move to a 2nd FTP server</strong><br />
+	Handy to import files to your FTP server, or to export files from your FTP server to another FTP server.</li>
+
+	<li> <strong>Rename and chmod</strong><br />
+	Chmod handles directories recursively.</li>
+
+	<li> <strong>View code with syntax highlighting</strong><br />
+	PHP functions are linked to the documentation on php.net.</li>
+
+	<li> <strong>Plain text editor</strong><br />
+	Edit text right from your browser; every time you save the changes the new file is transferred to the FTP server.</li>
+
+	<li> <strong>HTML editors</strong><br />
+	Edit HTML a What-You-See-Is-What-You-Get (WYSIWYG) form; there are 3 different editors to choose from.</li>
+
+	<li> <strong>Code editor</strong><br />
+	Edit HTML and PHP in an editor with syntax highlighting.</li>
+
+	<li> <strong>Search for words or phrases</strong><br />
+	Filter out files based on the filename, last modification time and filesize.</li>
+
+	<li> <strong>Calculate size</strong><br />
+	Calculate the size of directories and files.</li>
+		");
+		case "admin/modules#description":
+			return t("net2ftp is a web based FTP client.");
+	}
+}
+
+/**
+ * Implementation of hook_perm().
+ */
+function net2ftp_perm() {
+	return array("net2ftp module");
+}
+
+/**
+ * Implementation of hook_node_name().
+ */
+function net2ftp_node_name($node) {
+	return t("net2ftp");
+}
+
+/**
+ * Implementation of hook_access().
+ */
+function net2ftp_access($op, $node) {
+	return true;
+}
+
+/**
+ * Implementation of hook_menu().
+ */
+function net2ftp_menu($may_cache) {
+	$items = array();
+	$items[] = array(	"path" => "net2ftp", 
+				"title" => t("net2ftp"), 
+				"callback" => "net2ftp_page", 
+				"access" => net2ftp_access("main", NULL), 
+				"type" => MENU_CALLBACK);
+	return $items;
+}
+
+/**
+ * Implementation of hook_form().
+ */
+function net2ftp_form(&$node) {
+	if (function_exists("taxonomy_node_form")) {
+		$output .= implode("", taxonomy_node_form("net2ftp", $node));
+	}
+
+	$output .= form_textarea(t("Body"), "body", $node->body, 60, 20, "", NULL, TRUE);
+	$output .= filter_form("format", $node->format);
+
+	return $output;
+}
+
+
+/**
+ * Implementation of hook_block().
+ */
+function net2ftp_block($op = "list", $delta = 0) {
+
+// List of blocks: return text
+	if ($op == "list") {
+		$blocks[0]["info"] = t("net2ftp login form");
+		return $blocks;
+	}
+
+// Else: print the login form (not when the node is active)
+	elseif ($_GET["q"] != "net2ftp") {
+
+// Global variables
+		global $net2ftp_settings, $net2ftp_globals, $net2ftp_result, $net2ftp_messages;
+
+// Include the net2ftp library file main.inc.php
+		require_once(NET2FTP_APPLICATION_ROOTDIR . "/main.inc.php");
+
+// Get current output buffer contents and store it temporarily in $ob
+		$ob = ob_get_contents();
+
+// If output buffering is not switched on, switch it on
+		if ($ob == false) { ob_start(); }
+// If output buffering is switched on, clean the output buffer
+		else { ob_clean(); }
+
+// Send the HTTP headers
+		net2ftp("sendHttpHeaders");
+
+// Print the Javascript and CSS file includes
+// This is done in /drupal/includes/theme.inc
+
+// Set the action URL to trigger the Drupal node from the Drupal block (login form)
+		$net2ftp_globals["action_url"] = $net2ftp_globals["PHP_SELF"] . "?q=net2ftp";
+
+// Print the body (captured in output buffer)
+		net2ftp("printBody");
+
+// Print the body
+// This is done below, in net2ftp_page()
+
+// Get the output generated by net2ftp and append it to $output
+		$ob_net2ftp = ob_get_contents();
+		$output .= $ob_net2ftp;
+
+// Restore the output buffer as it was before
+		ob_clean();
+		ob_start();
+		echo $ob;
+
+		$block["subject"] = "net2ftp login form";
+		$block["content"] = $output;
+
+		return $block;
+	}
+}
+
+
+/**
+ * Implementation of hook_onload().
+ */
+function net2ftp_onload() {
+
+// Global variables
+	global $net2ftp_settings, $net2ftp_globals, $net2ftp_result, $net2ftp_messages;
+
+// Include the net2ftp library file main.inc.php
+	require_once(NET2FTP_APPLICATION_ROOTDIR . "/main.inc.php");
+
+// Get current output buffer contents and store it temporarily in $ob
+	$ob = ob_get_contents();
+
+// If output buffering is not switched on, switch it on
+	if ($ob == false) { ob_start(); }
+// If output buffering is switched on, clean the output buffer
+	else { ob_clean(); }
+
+// Send the HTTP headers
+// This is done below, in net2ftp_page()
+
+// Print the Javascript and CSS file includes
+// This is done in /drupal/includes/theme.inc
+
+// Print the body (captured in output buffer)
+	net2ftp("printBodyOnload");
+
+// Print the body
+// This is done below, in net2ftp_page()
+
+// Get the output generated by net2ftp and append it to $output
+	$ob_net2ftp = ob_get_contents();
+	$output .= $ob_net2ftp;
+
+// Restore the output buffer as it was before
+	ob_clean();
+	ob_start();
+	echo $ob;
+
+	return $output;
+
+}
+
+
+
+/**
+ * Menu callback; displays the main net2ftp screens
+ */
+function net2ftp_page() {
+
+// ------------------------------------------------------------------------
+// 1. Set global constants and include the net2ftp library file main.inc.php
+// ------------------------------------------------------------------------
+
+// Global variables
+	global $net2ftp_settings, $net2ftp_globals, $net2ftp_result, $net2ftp_messages;
+
+// Include the net2ftp library file main.inc.php
+	require_once(NET2FTP_APPLICATION_ROOTDIR . "/main.inc.php");
+
+// ------------------------------------------------------------------------
+// 2. Execute net2ftp($action)
+// Global variables are stored in net2ftp_globals
+// ------------------------------------------------------------------------
+
+// Get current output buffer contents and store it temporarily in $ob
+	$ob = ob_get_contents();
+
+// If output buffering is not switched on, switch it on
+	if ($ob == false) { ob_start(); }
+// If output buffering is switched on, clean the output buffer
+	else { ob_clean(); }
+
+// Send the HTTP headers
+// These are sent immediately to the browser, they're not captured in the output buffer
+	net2ftp("sendHttpHeaders");
+
+// Print the Javascript and CSS file includes
+// This is done in /drupal/includes/theme.inc
+
+// Print the body (captured in output buffer)
+	net2ftp("printBody");
+
+// ------------------------------------------------------------------------
+// 3. Check the result and print out an error message
+//    This can be done using a template, or by accessing the $net2ftp_result variable directly
+// ------------------------------------------------------------------------
+
+	if ($net2ftp_result["success"] == false) {
+		require_once($net2ftp_globals["application_rootdir"] . "/skins/drupal/error.template.php");
+	}
+
+// Get the output generated by net2ftp and append it to $output
+	$ob_net2ftp = ob_get_contents();
+	$output .= $ob_net2ftp;
+
+// Restore the output buffer as it was before
+	ob_clean();
+	ob_start();
+	echo $ob;
+
+	print theme("page", $output);
+}
+
+?>

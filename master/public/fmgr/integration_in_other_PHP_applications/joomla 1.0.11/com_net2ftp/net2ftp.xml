@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<mosinstall type="component">
+	<name>net2ftp</name>
+	<creationDate>13/11/2005</creationDate>
+	<author>David Gartner</author>
+	<copyright>The core code of this component is released under the GNU/GPL License. Submodules are released under their own license.</copyright>
+	<authorEmail>david@net2ftp.com</authorEmail>
+	<authorUrl>www.net2ftp.com</authorUrl>
+	<version>0.90</version>
+
+	<files>
+		<filename>net2ftp.php</filename>
+	</files>
+
+	<install>
+	</install>
+
+	<uninstall>
+	</uninstall>
+
+	<installfile>
+		<filename>install.net2ftp.php</filename>
+	</installfile>
+
+	<uninstallfile>
+		<filename>uninstall.net2ftp.php</filename>
+	</uninstallfile>
+
+	<administration>
+		<menu>net2ftp</menu>
+		<files>
+			<filename>admin.net2ftp.php</filename>
+		</files>
+	</administration>
+</mosinstall>
