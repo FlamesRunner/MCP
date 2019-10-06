@@ -32,3 +32,15 @@ Please include your operating system version, PHP version and the severity of yo
 Severe bugs include security vulnerabilities and issues that need to be resolved immediately. Normal-severity bugs
 are ones that are not as severe, but can still disrupt functionality in the panel. Minor bugs are those that are 
 cosmetic and are not urgent.
+
+#### Hosted version
+There is a hosted version available at https://mcp.ahong.ca that is fully working and running on the latest tested release. The only thing that you need to do is
+add a server (follow the slave installation guide above.) Currently, the panel does not support running the server on different ports than 25565, which is an issue
+that needs to be resolved in the near future, nor does it properly support NAT (or at least I haven't tested it. I am open to that if it works).
+
+#### TO-DO
+- Administration area
+- Easier installation process & guide
+- Alternate ports than 25565
+- Multiple installations of MCP on a single server
+- Master/slave compatibility on the same server
