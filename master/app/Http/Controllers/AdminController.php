@@ -92,7 +92,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Function User Activation.
+     * Function User Management.
      *
      * @param Request $request
      * @return mixed
