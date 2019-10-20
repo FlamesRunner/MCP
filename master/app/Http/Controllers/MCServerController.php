@@ -129,7 +129,7 @@ class MCServerController extends Controller
 
     public function pingServer ($host, Request $request) {
        $hosts = MCServers::where('host', $host);
-       if ($hosts->->where('email', auth()->user()->email)->count() == 0) {
+       if ($hosts->where('email', auth()->user()->email)->count() == 0) {
             $request->session()->flash('message.level', 'danger');
             $request->session()->flash('message.content', 'Access denied.');
             return redirect(route('listServers'));
@@ -144,7 +144,7 @@ class MCServerController extends Controller
 
     public function serverSettings ($host, Request $request) {
        $hosts = MCServers::where('host', $host);
-       if ($hosts->->where('email', auth()->user()->email)->count() == 0) {
+       if ($hosts->where('email', auth()->user()->email)->count() == 0) {
             $request->session()->flash('message.level', 'danger');
             $request->session()->flash('message.content', 'Access denied.');
             return redirect(route('listServers'));
@@ -173,7 +173,7 @@ class MCServerController extends Controller
 
     public function setRam ($host, Request $request) {
        $hosts = MCServers::where('host', $host);
-       if ($hosts->->where('email', auth()->user()->email)->count() == 0) {
+       if ($hosts->where('email', auth()->user()->email)->count() == 0) {
             $request->session()->flash('message.level', 'danger');
             $request->session()->flash('message.content', 'Access denied.');
             return redirect(route('listServers'));
@@ -203,7 +203,7 @@ class MCServerController extends Controller
 
     public function manageServerPage ($host, Request $request) {
        $hosts = MCServers::where('host', $host);
-       if ($hosts->->where('email', auth()->user()->email)->count() == 0) {
+       if ($hosts->where('email', auth()->user()->email)->count() == 0) {
             $request->session()->flash('message.level', 'danger');
             $request->session()->flash('message.content', 'Access denied.');
             return redirect(route('listServers'));
@@ -227,7 +227,7 @@ class MCServerController extends Controller
 
     public function changePowerLevel ($host, $status, Request $request) {
         $hosts = MCServers::where('host', $host);
-        if ($hosts->->where('email', auth()->user()->email)->count() == 0) {
+        if ($hosts->where('email', auth()->user()->email)->count() == 0) {
             $request->session()->flash('message.level', 'danger');
             $request->session()->flash('message.content', 'Access denied.');
             return redirect(route('listServers'));
@@ -270,7 +270,7 @@ class MCServerController extends Controller
 
     public function fileManager ($host, Request $request) {
        $hosts = MCServers::where('host', $host);
-       if ($hosts->->where('email', auth()->user()->email)->count() == 0) {
+       if ($hosts->where('email', auth()->user()->email)->count() == 0) {
           $request->session()->flash('message.level', 'danger');
           $request->session()->flash('message.content', 'Access denied.');
           return redirect(route('listServers'));
