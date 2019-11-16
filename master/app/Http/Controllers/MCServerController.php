@@ -171,36 +171,58 @@ class MCServerController extends Controller
         return view("serverSettings")->with('ram', $ram)->with('host', $host);
     }
 
-    public function setRam ($host, Request $request) {
-       $hosts = MCServers::where('host', $host);
-       if ($hosts->where('email', auth()->user()->email)->count() == 0) {
+    public function saveSettings ($host, Request $request) {
+        $hosts = MCServers::where('host', $host);
+        if ($hosts->where('email', auth()->user()->email)->count() == 0) {
             $request->session()->flash('message.level', 'danger');
             $request->session()->flash('message.content', 'Access denied.');
             return redirect(route('listServers'));
         }
         $serverObject = $hosts->first();
         $apikey = $serverObject->apikey;
-        $sts = "";
+        $sts_1_st = false;
+        $sts_2_st = false;
+        $sts_1 = "";
+        $sts_2 = "";
+        if (!ctype_digit($request->input('port')) && $request->input('port') !== "NOT_SET") {
+            $request->session()->flash('message.level', 'danger');
+            $request->session()->flash('message.content', 'Invalid port value.');
+            return redirect(route('serverSettings', [$host]));
+        }
         if (!ctype_digit($request->input('ram'))) {
             $request->session()->flash('message.level', 'danger');
             $request->session()->flash('message.content', 'Invalid RAM value.');
             return redirect(route('serverSettings', [$host]));
         }
         try {
-            $sts = file_get_contents("http://" . $host . "/api.php?k=" . $apikey . "&act=setram&ram=" . $request->input('ram'));
+            $sts_1 = file_get_contents("http://" . $host . "/api.php?k=" . $apikey . "&act=setram&ram=" . $request->input('ram'));
         } catch (\Exception $ex) {
-            $sts = "FAILED";
+            $sts_1 = "FAILED";
         }
-        if (trim($sts) == "SUCCESS") {
+        $sts_1_st = (trim($sts_1) == "SUCCESS");
+
+        if (trim($request->input('port')) == "NOT_SET") {
+            $sts_2_st = true;
+        } else {
+            try {
+                $sts_2 = file_get_contents("http://" . $host . "/api.php?k=" . $apikey . "&act=setport&port=" . $request->input('port'));
+            } catch (\Exception $ex) {
+                $sts_2 = "FAILED";
+            }
+            $sts_2_st = (trim($sts_2) == "SUCCESS");
+        }
+        
+        if ($sts_1_st && $sts_2_st) {
             $request->session()->flash('message.level', 'success');
-            $request->session()->flash('message.content', 'RAM allocation updated.');
+            $request->session()->flash('message.content', 'Server settings were saved.');
         } else {
             $request->session()->flash('message.level', 'danger');
-            $request->session()->flash('message.content', 'RAM allocation could not be updated.');
+            $request->session()->flash('message.content', 'One or more settings could not be saved.');
         }
+        
         return redirect(route('serverSettings', [$host]));
     }
-
+    
     public function manageServerPage ($host, Request $request) {
        $hosts = MCServers::where('host', $host);
        if ($hosts->where('email', auth()->user()->email)->count() == 0) {
