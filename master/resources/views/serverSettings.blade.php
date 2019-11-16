@@ -21,9 +21,19 @@
 		<div class="input-group-append">
 			<span class="input-group-text">MB</span>
 		</div>
-		<span class="input-group-append">
-			<input type="submit" class="btn btn-success" value="Save" />
-		</span>
+	</div>
+    <br />
+    <label for="port">Server port</label>
+	<div class="input-group">
+		<div class="input-group">
+			<input @if ($port !== "NOT_SET") name="port" @endif class="form-control" type="number" value="{{ $port }}" placeholder="Port allocated..." @if ($port == "NOT_SET") disabled="disabled" @endif />
+			@if ($port == "NOT_SET")
+				<input name="port" value="NOT_SET" type="hidden" />
+			@endif
+			<div class="input-group-append">
+				<input type="submit" class="btn btn-success" value="Save" />
+			</div>
+		</div>
 	</div>
 	{{ Form::close() }}
 </div>
