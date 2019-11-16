@@ -168,7 +168,14 @@ class MCServerController extends Controller
         } catch (\Exception $ex) {
             $ram = "0";
         }
-        return view("serverSettings")->with('ram', $ram)->with('host', $host);
+        $port = "";
+        try {
+            $port = trim(@file_get_contents("http://" . $host . "/api.php?k=" . $apikey . "&act=getport"));
+            if ($port == "no_port_set" || $port == "SERVER_PROPERTIES_NOT_SET") $port = "NOT_SET";
+        } catch (\Exception $ex) {
+            $port = "NOT_SET";
+        }
+        return view("serverSettings")->with('ram', $ram)->with('port', $port)->with('host', $host);
     }
 
     public function saveSettings ($host, Request $request) {
