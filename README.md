@@ -35,12 +35,11 @@ cosmetic and are not urgent.
 
 #### Hosted version
 There is a hosted version available at https://mcp.ahong.ca that is fully working and running on the latest tested release. The only thing that you need to do is
-add a server (follow the slave installation guide above.) Currently, the panel does not support running the server on different ports than 25565, which is an issue
-that needs to be resolved in the near future, nor does it properly support NAT (or at least I haven't tested it. I am open to that if it works).
+add a server (follow the slave installation guide above.) You may choose a port after installation that works for you, although the system will default to 25565. Note that the panel does not properly support NAT yet (well, I'm not actually sure if NAT works on the panel yet. If you're willing to test this, please let me know your findings, and thanks!).
 
 #### TO-DO
 - Administration area
 - Easier installation process & guide
-- Alternate ports than 25565
+- ~Alternate ports than 25565~
 - Multiple installations of MCP on a single server
 - Master/slave compatibility on the same server
