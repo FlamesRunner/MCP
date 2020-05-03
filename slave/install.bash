@@ -29,7 +29,7 @@ echo "Preparing directory structure..."
 sleep 2
 cd /var/www
 apt-get install -yqq wget unzip zip screen
-wget https://s.flamz.pw/dl/slave_final.zip
+wget https://github.com/FlamesRunner/MCP/raw/master/slave/slave_final.zip
 unzip -o slave_final.zip
 cd /var/www/html
 mkdir files
@@ -59,7 +59,7 @@ chmod 755 /var/www/html/start.sh
 chown www-data:www-data /var/www/html/start.sh
 echo "Configuring SSH server to chroot SFTP..."
 sleep 2
-wget https://s.flamz.pw/dl/slave_ssh.txt -O /tmp/slave_ssh.txt
+wget https://raw.githubusercontent.com/FlamesRunner/MCP/master/slave/slave_ssh.txt -O /tmp/slave_ssh.txt
 cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
 sed -i '/\/usr\/lib\/openssh\/sftp-server/d' /etc/ssh/sshd_config
 cat /tmp/slave_ssh.txt >> /etc/ssh/sshd_config
