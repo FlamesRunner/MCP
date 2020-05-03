@@ -34,7 +34,7 @@ Requirements:
 
 Once your master is installed, you should be able to see the installation instructions on the home screen. In any case, it is provided below for your convenience:
 
-	cd ~ && wget https://s.flamz.pw/dl/install.bash
+	cd ~ && wget https://raw.githubusercontent.com/FlamesRunner/MCP/master/slave/install.bash
 	chmod +x install.bash
 	./install.bash
 
