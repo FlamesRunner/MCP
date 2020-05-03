@@ -71,8 +71,8 @@ sleep 2
 MCPASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
 APIKEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
 echo -e "$MCPASS\n$MCPASS" | passwd minecraft
-sed -i 's/9dae50679c39a83142c81a389fb9b8e926905ecfe75d772b03f6d69947d76732/'"$APIKEY"'/g' /var/www/html/api.php
-sed -i 's/04d99b2cca600c77b59b0bdeaea721a5baf0c60f914bda1716b7adc3a7785988/'"$MCPASS"'/g' /var/www/html/api.php
+sed -i 's/SLAVE_API_KEY/'"$APIKEY"'/g' /var/www/html/api.php
+sed -i 's/SLAVE_MC_PASS/'"$MCPASS"'/g' /var/www/html/api.php
 sleep 2
 echo " "
 echo "Installation complete."

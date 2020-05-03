@@ -1,6 +1,6 @@
 <?php
-	DEFINE ("API_KEY", "qnpDJWILjpb9ScJPCnGTxNH4uPdLi4Uppmobo4SOsjCt8iItW9dQ8rKoHyL6y7TX");
-	DEFINE ("MC_PASS", "GPgLCcXrHXmiGLvXCXCVOkRRaSODuT5f3yqr34DFdZ5O8Uf0AU33jcClnCUn86Y7");
+	DEFINE ("API_KEY", "SLAVE_API_KEY");
+	DEFINE ("MC_PASS", "SLAVE_MC_PASS");
         if ($_GET["k"] !== API_KEY) {
                 die("INVALID_KEY");
         }
