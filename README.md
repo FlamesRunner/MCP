@@ -44,6 +44,7 @@ add a server (follow the slave installation guide above.) You may choose a port 
 - Administration area
 - Easier installation process & guide
 - ~Alternate ports than 25565~
+- Add SSL to slave nodes so that API keys aren't transported in plain-text (severe)
 - Multiple installations of MCP on a single server (working on it)
 - For ease of development and use, adding the ability to use Docker to create an instance of the master server
 - Master/slave compatibility on the same server
