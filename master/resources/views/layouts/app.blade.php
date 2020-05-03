@@ -25,7 +25,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
+        <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'mcPanel') }}
@@ -91,7 +91,9 @@
                 </div>
             </div>
         </nav>
-
+	<br />
+	<br />
+	<br />
         <main class="py-4">
             @yield('content')
         </main>

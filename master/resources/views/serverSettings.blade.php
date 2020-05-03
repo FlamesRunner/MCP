@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content') 
+@section('content')
 
 <div class="container">
 	<h3>Server Settings &nbsp; <span style="font-size: 12px"><a href="{{ route('manageServerPage', [$host]) }}">Back</a></span></h3>
@@ -13,7 +13,7 @@
     	</div>
     	<br />
     @endif
-	{{ Form::open(array('url' => route('setRam', [$host]))) }}
+	{{ Form::open(array('url' => route('saveSettings', [$host]))) }}
 	{{ csrf_field() }}
 	<label for="ram">RAM allocated</label>
 	<div class="input-group">
@@ -22,8 +22,8 @@
 			<span class="input-group-text">MB</span>
 		</div>
 	</div>
-    <br />
-    <label for="port">Server port</label>
+	<br />
+	<label for="port">Server port</label>
 	<div class="input-group">
 		<div class="input-group">
 			<input @if ($port !== "NOT_SET") name="port" @endif class="form-control" type="number" value="{{ $port }}" placeholder="Port allocated..." @if ($port == "NOT_SET") disabled="disabled" @endif />
@@ -37,4 +37,5 @@
 	</div>
 	{{ Form::close() }}
 </div>
-@endsection
+
+@endsection('content')

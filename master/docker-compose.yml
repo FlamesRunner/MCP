@@ -1,0 +1,41 @@
+version: '3'
+services:
+  # PHP-FPM/NGINX
+  app:
+    image: wyveo/nginx-php-fpm
+    build: .
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      SERVICE_TAGS: dev
+      SERVICE_NAME: webserver
+    volumes:
+      - ./:/usr/share/nginx/html
+      - ./nginx_conf:/etc/nginx/conf.d
+    networks:
+      - app-network
+
+  # MySQL
+  db:
+    image: mysql:5.7.22
+    container_name: database_server
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: MCP
+      MYSQL_ROOT_PASSWORD: 123
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    networks:
+      - app-network
+
+# Network
+networks:
+  app-network:
+    driver: bridge

@@ -171,7 +171,11 @@ class MCServerController extends Controller
         $port = "";
         try {
             $port = trim(@file_get_contents("http://" . $host . "/api.php?k=" . $apikey . "&act=getport"));
-            if ($port == "no_port_set" || $port == "SERVER_PROPERTIES_NOT_SET") $port = "NOT_SET";
+            if ($port == "no_port_set") {
+                $port = "NOT_SET";
+            } else if ($port == "SERVER_PROPERTIES_NOT_SET") {
+                $port = "NOT_SET";
+            }
         } catch (\Exception $ex) {
             $port = "NOT_SET";
         }
@@ -188,14 +192,15 @@ class MCServerController extends Controller
         $serverObject = $hosts->first();
         $apikey = $serverObject->apikey;
         $sts_1_st = false;
-        $sts_2_st = false;
         $sts_1 = "";
+        $sts_2_st = false;
         $sts_2 = "";
         if (!ctype_digit($request->input('port')) && $request->input('port') !== "NOT_SET") {
             $request->session()->flash('message.level', 'danger');
             $request->session()->flash('message.content', 'Invalid port value.');
             return redirect(route('serverSettings', [$host]));
         }
+
         if (!ctype_digit($request->input('ram'))) {
             $request->session()->flash('message.level', 'danger');
             $request->session()->flash('message.content', 'Invalid RAM value.');
@@ -218,18 +223,20 @@ class MCServerController extends Controller
             }
             $sts_2_st = (trim($sts_2) == "SUCCESS");
         }
-        
         if ($sts_1_st && $sts_2_st) {
             $request->session()->flash('message.level', 'success');
             $request->session()->flash('message.content', 'Server settings were saved.');
-        } else {
+        } else if (trim($sts_2) == "PROPERTIES_FILE_NOT_FOUND") {
+            $request->session()->flash('message.level', 'warning');
+            $request->session()->flash('message.content', 'Before changing the port, you need to start the server at least once.');
+	} else {
             $request->session()->flash('message.level', 'danger');
             $request->session()->flash('message.content', 'One or more settings could not be saved.');
         }
         
         return redirect(route('serverSettings', [$host]));
     }
-    
+
     public function manageServerPage ($host, Request $request) {
        $hosts = MCServers::where('host', $host);
        if ($hosts->where('email', auth()->user()->email)->count() == 0) {

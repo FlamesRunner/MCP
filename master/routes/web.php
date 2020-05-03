@@ -34,7 +34,7 @@ Route::get('/servers/manage/{host}', 'MCServerController@manageServerPage')->nam
 Route::get('/servers/manage/{host}/console', 'MCServerController@consoleLog')->name('consoleLog');
 Route::get('/servers/manage/{host}/status', 'MCServerController@serverStatus')->name('serverStatus');
 Route::get('/servers/manage/{host}/fm', 'MCServerController@fileManager')->name('fileManager');
-Route::post('/servers/manage/{host}/saveSettings', 'MCServerController@setRam')->name('saveSettings');
+Route::post('/servers/manage/{host}/saveSettings', 'MCServerController@saveSettings')->name('saveSettings');
 Route::get('/servers/manage/{host}/settings', 'MCServerController@serverSettings')->name('serverSettings');
 Route::get('/servers/manage/{host}/power/{status}', 'MCServerController@changePowerLevel')->name('changePowerLevel');
 Route::post('/servers/manage/{host}/cmd', 'MCServerController@serverCmd')->name('serverCmd');

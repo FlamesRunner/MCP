@@ -18,6 +18,16 @@ functionality.
 
 In either case, if you set everything up properly (a more extensive guide will be published at a later date), then you should be able to create an account. 
 
+#### Installing master using Docker
+You may also choose to install the host node using Docker. Before you start, make sure you have docker and docker-compose installed, as well as PHP 7.x and composer.
+First, clone the repository and enter the master directory. We will need to run `composer install` to obtain our dependencies.
+Then using screen or tmux, run `docker-compose up`. Detach from the screen and then execute the following commands:
+
+    docker exec webserver chown nginx:nginx -R /usr/share/nginx/html
+    docker exec webserver bash -c "cd /usr/share/nginx/html && php artisan migrate"
+
+At this point, the system should be up and running.
+
 #### Slave installation
 Requirements:
 - A freshly installed box running Debian 9
